@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Toolbelt with Draggable Markers</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnz0i8_RVpjCZG-56pzgNLCvjLurBTufk"></script>
+    <style>
+      #map {
+        height: 80%;
+        width: 100%;
+      }
+      #toolbelt {
+        display: flex;
+        padding: 10px;
+        border-top: 2px solid #ddd;
+        background-color: #f8f9fa;
+        justify-content: center;
+        gap: 20px;
+      }
+      .marker {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        background-color: red;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="toolbelt">
+      <div class="marker" data-color="red">1</div>
+      <div class="marker" data-color="blue">2</div>
+      <div class="marker" data-color="green">3</div>
+    </div>
+    <script>
+      let map;
+
+      // Initialize the map
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 37.7749, lng: -122.4194 }, // San Francisco
+          zoom: 12,
+        });
+
+        // Add drag-and-drop functionality to toolbelt markers
+        setupToolbelt();
+      }
+
+      function setupToolbelt() {
+        const toolbelt = document.getElementById("toolbelt");
+        const markers = document.querySelectorAll(".marker");
+
+        markers.forEach((markerDiv) => {
+          markerDiv.addEventListener("dragstart", (event) => {
+            event.dataTransfer.setData("color", markerDiv.getAttribute("data-color"));
+          });
+        });
+
+        map.addListener("dragover", (event) => {
+          event.preventDefault(); // Allow dropping on the map
+        });
+
+        map.addListener("drop", (event) => {
+          event.preventDefault();
+          const color = event.dataTransfer.getData("color");
+          const latLng = event.latLng;
+          addMarker(latLng, color);
+        });
+      }
+
+      function addMarker(location, color) {
+        new google.maps.Marker({
+          position: location,
+          map: map,
+          draggable: true,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: color,
+            fillOpacity: 1,
+            strokeWeight: 2,
+            strokeColor: "white",
+          },
+        });
+      }
+
+      // Initialize the map
+      window.onload = initMap;
+    </script>
+  </body>
+</html>
