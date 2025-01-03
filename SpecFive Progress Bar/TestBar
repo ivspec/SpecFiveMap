@@ -1,0 +1,487 @@
+{% if customer %}
+<!-- Membership Progress Markup -->
+<div class="cart-shipping__wrapper">
+  <!-- Customer Tier -->
+  <p class="cart-shipping__tierLabel"></p>
+  <!-- Dynamic Progress Message -->
+  <p class="cart-shipping__progressMessage"></p>
+  <div class="cart-shippingThreshold__bar">
+    <span class="cart-shippingThreshold__progress"></span>
+  </div>
+  <!-- Start and End Values -->
+  <div class="cart-shippingThreshold__values">
+    <span class="cart-shippingThreshold__startValue">$0</span>
+    <span class="cart-shippingThreshold__endValue">$500</span>
+  </div>
+  <!-- Pill Containers -->
+  <div class="cart-shipping__pillContainer">
+    <span class="cart-shipping__currentSpent">Spent: $0</span>
+    <span class="cart-shipping__remainingGoal">Remaining: $500</span>
+  </div>
+  <!-- Club Member Discount Message -->
+  {% if customer.tags contains 'coupon1' %}
+  <p class="cart-shipping__discountMessage" style="display: none;"></p>
+  {% endif %}
+  <!-- Wade Blake Discount Message -->
+  <!-- Elite Member Priority Shipping Message -->
+  <p class="cart-shipping__eliteMessage" style="display: none;"></p>
+
+  <!-- New Rewards Section -->
+  <div class="rewards-section">
+    <!-- Discounts Section -->
+  <h2 class="rewards-section__title">Your Available Discounts</h2>
+  <div class="rewards-section__grid">
+    {% if customer.tags contains 'coupon1' %}
+      <div class="discount-card">
+        <div class="discount-card__content">
+          <div class="discount-card__info">
+            <p class="discount-card__label">CLUB MEMBER DISCOUNT</p>
+            <p class="discount-card__description">10% Off Ranger Magnum or Pulse Pack</p>
+          </div>
+          <div class="discount-card__code">
+            <p class="discount-code">CLUB500</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if customer.tags contains 'wadeblake' %}
+      <div class="discount-card">
+        <div class="discount-card__content">
+          <div class="discount-card__info">
+            <p class="discount-card__label">WADE BLAKE SPECIAL</p>
+            <p class="discount-card__description">$10 Off Your Next Order</p>
+          </div>
+          <div class="discount-card__code">
+            <p class="discount-code">WADE10</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if customer.total_spent >= 1000 and customer.tags contains 'SpecFive Elite Member' %}
+  <div class="discount-card">
+    <div class="discount-card__content">
+      <div class="discount-card__info">
+        <p class="discount-card__label">ELITE MEMBER SHIPPING</p>
+        <p class="discount-card__description">Free Priority Shipping</p>
+      </div>
+      <div class="discount-card__code">
+        <p class="discount-code">ELITE1000</p>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+  </div>
+</div>
+
+
+    <!-- Perks Section -->
+    <h2 class="rewards-section__title">Membership Perks</h2>
+    <div class="rewards-section__grid">
+     {% if customer.total_spent >= 1000 and customer.tags contains 'SpecFive Elite Member' %}
+  <div class="perk-card">
+    <div class="perk-card__content">
+      <div class="perk-card__icon">
+        ✓
+      </div>
+      <div class="perk-card__info">
+        <p class="perk-card__description">Free Priority Shipping</p>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Wrapper Styling */
+.cart-shipping__wrapper {
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px; !important
+  width: 95%; /* Ensure responsiveness */
+  color: white !important;
+  text-align: center;
+  border-radius: 8px;
+}
+
+/* Restrict wrapper width to 1200px for laptops and desktops */
+@media (min-width: 1024px) {
+  .cart-shipping__wrapper {
+    width: 1200px !important;
+  }
+}
+
+/* Progress Bar Styling */
+.cart-shippingThreshold__bar {
+  position: relative;
+  background-color: #0e0e0e;
+  height: 2.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  width: 100%; /* Default for larger screens */
+}
+
+.cart-shippingThreshold__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 0;
+  max-width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #04FF85;
+  transition: width 0.3s ease;
+  border-radius: 8px;
+}
+
+/* Tier Label Styling */
+.cart-shipping__tierLabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* Progress Message Styling */
+.cart-shipping__progressMessage {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  text-align: center;
+  margin-bottom: 15px;
+  color: white;
+}
+
+/* Start and End Values Styling */
+.cart-shippingThreshold__values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  color: white;
+  padding-top: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+}
+
+/* Pill Container Styling */
+.cart-shipping__pillContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
+    padding-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+/* Spent Pill Styling */
+.cart-shipping__currentSpent,
+.cart-shipping__remainingGoal {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 9px 15px;
+  border-radius: 25px;
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Different Colors for Spent and Remaining */
+.cart-shipping__currentSpent {
+  color: #181818;
+  background-color: #04FF85;
+}
+
+.cart-shipping__remainingGoal {
+  color: white;
+  background-color: #0e0e0e;
+}
+
+
+/* New Rewards Section Styles */
+.rewards-section {
+  margin-top: 2rem;
+  background-color: #181818;
+  border-radius: 0.5rem;
+}
+
+.discount-card__label {
+  color: #FFDD57; /* Keep the green color for the title */
+  font-size: 18px;
+  font-weight: bold; /* Make the title bold */
+  margin-bottom: 0.25rem;
+}
+
+
+.rewards-section__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  padding-bottom: 12px;
+  text-align: left; /* Use text-align for alignment */
+  font-weight: bold;
+  color: white !important;
+  margin-bottom: 1rem;
+}
+
+.rewards-section__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Dynamically fit 3 per row */
+  gap: 1.5rem; /* Space between grid items */
+  margin-bottom: 2rem;
+}
+
+.discount-card {
+  background-color: #0e0e0e;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #FFDD57;
+}
+
+.discount-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.discount-card__info {
+  text-align: center;
+}
+
+.discount-card__code {
+  margin-top: 0.5rem;
+  background-color: #181818;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.discount-code {
+  color: #FFDD57;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+
+.perk-card {
+  background-color: #0e0e0e;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #FFDD57;
+}
+
+.perk-card__content {
+  display: flex;
+  flex-direction: row; /* Keep the check mark and text in the same line */
+  align-items: center; /* Vertically align the check mark and text */
+  justify-content: center; /* Center them horizontally within the card */
+  gap: 0.5rem; /* Space between the check mark and the text */
+}
+
+.perk-card__icon {
+  color: #FFDD57; /* Check mark color */
+  font-size: 24px; /* Size of the check mark */
+}
+
+.perk-card__description {
+  font-family: 'Inter', sans-serif; /* Font for the text */
+  color: #FFDD57;
+  font-size: 18px;
+  font-weight: bold; /* Bold for emphasis */
+  text-align: left; /* Ensure the text aligns properly */
+}
+
+
+
+
+.perk-card__subtitle {
+  color: #808080;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cart-shipping__wrapper {
+    padding: 15px;
+    width: 100%;
+  }
+
+  .cart-shippingThreshold__bar {
+    width: 90%; !important 
+    margin: 0 auto;
+  }
+
+  .cart-shipping__tierLabel {
+    font-size: 32px;
+  }
+
+  .cart-shipping__progressMessage {
+    font-size: 16px;
+  }
+
+  .cart-shippingThreshold__values {
+    font-size: 14px;
+  }
+
+  .cart-shipping__pillContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cart-shipping__currentSpent,
+  .cart-shipping__remainingGoal {
+    font-size: 14px;
+    padding: 7px 10px;
+  }
+
+  .rewards-section {
+    padding: 1rem;
+  }
+
+  .discount-card__content,
+  .perk-card__content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .discount-card__code {
+    margin-top: 0.5rem;
+  }
+
+  .rewards-section__title {
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-shipping__wrapper {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .cart-shippingThreshold__bar {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .cart-shipping__tierLabel {
+    font-size: 28px;
+  }
+
+  .cart-shipping__progressMessage {
+    font-size: 14px;
+  }
+
+  .cart-shippingThreshold__values {
+    font-size: 12px;
+  }
+
+  .cart-shipping__pillContainer {
+    gap: 5px;
+  }
+
+  .cart-shipping__currentSpent,
+  .cart-shipping__remainingGoal {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .rewards-section {
+    padding: 0.75rem;
+  }
+
+  .discount-card__description,
+  .perk-card__description {
+    font-size: 16px;
+  }
+}
+</style>
+
+<script>
+  function calculateProgress(currentVal, targetVal) {
+    var progressBar = document.querySelector('.cart-shippingThreshold__progress');
+
+    // Calculate progress percentage
+    var percentage = Math.min((currentVal / targetVal) * 100, 100);
+    progressBar.style.width = percentage + "%";
+
+    // Return the percentage for further use
+    return percentage;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const customerTotalSpent = {{ customer.total_spent | divided_by: 100 }};
+    
+    const tierLabel = document.querySelector('.cart-shipping__tierLabel');
+    const progressMessage = document.querySelector('.cart-shipping__progressMessage');
+    const discountMessage = document.querySelector('.cart-shipping__discountMessage');
+    const eliteMessage = document.querySelector('.cart-shipping__eliteMessage');
+    const startValueEl = document.querySelector('.cart-shippingThreshold__startValue');
+    const endValueEl = document.querySelector('.cart-shippingThreshold__endValue');
+    const currentSpentEl = document.querySelector('.cart-shipping__currentSpent');
+    const remainingGoalEl = document.querySelector('.cart-shipping__remainingGoal');
+
+    let tier = "MEMBER";
+    let nextTier = "CLUB MEMBER";
+    let nextGoal = 500;
+    let startValue = 0;
+    let endValue = 500;
+    let amountNeeded = nextGoal - customerTotalSpent;
+
+    if (customerTotalSpent >= 500 && customerTotalSpent < 1000) {
+        tier = "CLUB MEMBER";
+        nextTier = "ELITE MEMBER";
+        nextGoal = 1000;
+        startValue = 500;
+        endValue = 1000;
+        amountNeeded = nextGoal - customerTotalSpent;
+        discountMessage.style.display = "block";
+        eliteMessage.style.display = "none";
+    } else if (customerTotalSpent >= 1000) {
+        tier = "ELITE MEMBER";
+        nextTier = "";
+        startValue = 500;
+        endValue = 1000;
+        amountNeeded = 0;
+        discountMessage.style.display = "block";
+        eliteMessage.style.display = "block";
+        document.querySelector('.cart-shippingThreshold__bar').style.display = "block";
+        document.querySelector('.cart-shippingThreshold__progress').style.width = "100%";
+        document.querySelector('.cart-shippingThreshold__values').style.display = "flex";
+        document.querySelector('.cart-shippingThreshold__startValue').textContent = "$500";
+        document.querySelector('.cart-shippingThreshold__endValue').textContent = "$1000";
+        document.querySelector('.cart-shipping__remainingGoal').textContent = "Remaining: $0";
+    }
+
+    tierLabel.textContent = tier;
+
+    calculateProgress(customerTotalSpent, nextGoal);
+
+    if (amountNeeded > 0) {
+        progressMessage.textContent = `You are $${amountNeeded.toFixed(2)} away from reaching ${nextTier}!`;
+    } else {
+        progressMessage.textContent = `Congratulations! You've reached the Elite Member status!`;
+    }
+
+    currentSpentEl.textContent = `Spent: $${customerTotalSpent.toFixed(2)}`;
+    remainingGoalEl.textContent = `Remaining: $${amountNeeded.toFixed(2)}`;
+    startValueEl.textContent = `$${startValue}`;
+    endValueEl.textContent = `$${endValue}`;
+});
+
+
+</script>
+{% else %}
+<p>Please <a href="/account/login">log in</a> to see your membership progress.</p>
+{% endif %}
+
+
